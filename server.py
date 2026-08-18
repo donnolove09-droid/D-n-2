@@ -40,7 +40,7 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
-BOT_NAME = "VDON Đẹp Trai"
+BOT_NAME = "LUNA"
 
 OPENAI_KEY = os.environ.get("OPENAI_API_KEY", "")
 

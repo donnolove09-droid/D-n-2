@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>VDON Đẹp Trai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #08070b;
+    --bg-alt: rgba(15,13,21,.65);
+    --panel: rgba(21,18,30,.55);
+    --panel-2: rgba(27,23,38,.7);
+    --border: rgba(167,139,250,.18);
+    --text: #f3f1f8;
+    --text-dim: #8f8a9e;
+    --violet: #a78bfa;
+    --magenta: #f472b6;
+    --cyan: #5eead4;
+    --grad: linear-gradient(120deg, var(--violet), var(--magenta) 55%, #fb923c);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; touch-action: manipulation;}
+  html,body{
+    height:100%;
+    overflow:hidden;
+    position:fixed;
+    inset:0;
+    width:100%;
+  }
+  body{
+    background-image:
+      linear-gradient(180deg, rgba(6,5,9,.72) 0%, rgba(6,5,9,.55) 40%, rgba(6,5,9,.86) 100%),
+      url('/bg.jpg');
+    background-size: cover;
+    background-position: center 18%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: var(--font-body);
+    display:flex; flex-direction:column;
+  }
+
+  /* Top bar */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 26px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink:0;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    background: rgba(8,7,11,.35);
+  }
+  .wordmark{
+    font-family: var(--font-display);
+    font-weight:700;
+    font-size: 18px;
+    letter-spacing: -.01em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .wordmark .spark{
+    width:10px; height:10px; border-radius:3px;
+    background: var(--grad);
+    transform: rotate(45deg);
+  }
+  .avatar{
+    width:26px; height:26px; border-radius:50%;
+    object-fit:cover; flex-shrink:0;
+    border: 1px solid var(--border);
+  }
+  .avatar-fallback{
+    width:26px; height:26px; border-radius:50%;
+    background: var(--grad);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display); font-weight:700; font-size:12px; color:#08070b;
+    flex-shrink:0;
+  }
+  .msg-avatar{
+    width:22px; height:22px; border-radius:50%; object-fit:cover;
+    border: 1px solid var(--border); vertical-align:middle; margin-right:6px;
+  }
+  .msg-avatar-fallback{
+    width:16px; height:16px; border-radius:50%; background: var(--grad);
+    display:inline-block; vertical-align:middle; margin-right:6px;
+  }
+  .top-right{ display:flex; align-items:center; gap:14px; }
+  .status-pill{
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(21,18,30,.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display:flex; align-items:center;
+  }
+  .status-pill .live-label{
+    font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+    color: var(--text-dim); margin-right:8px;
+  }
+  .status-pill .dot{
+    width:7px; height:7px; border-radius:50%; background:#4ade80; display:inline-block; margin-right:8px;
+    box-shadow: 0 0 0 0 rgba(74,222,128,.6);
+    animation: pulse-dot 1.8s infinite;
+  }
+  @keyframes pulse-dot{
+    0%{ box-shadow: 0 0 0 0 rgba(74,222,128,.55); }
+    70%{ box-shadow: 0 0 0 7px rgba(74,222,128,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+  }
+  .new-chat-link{
+    font-size: 13px; color: var(--text-dim); cursor:pointer; border:none; background:none;
+    font-family: var(--font-body); text-decoration: underline; text-underline-offset:3px;
+    text-decoration-color: var(--border);
+  }
+  .new-chat-link:hover{ color: var(--text); text-decoration-color: var(--violet); }
+
+  /* Model switch row */
+  .switch-row{
+    display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+    padding: 12px 26px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink:0;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    background: rgba(8,7,11,.3);
+  }
+  .switch-group{ display:flex; align-items:center; gap:8px; }
+  .switch-group-label{
+    font-family: var(--font-mono); font-size: 10.5px; text-transform:uppercase;
+    letter-spacing:.08em; color: var(--text-dim); margin-right:4px;
+  }
+  .tab{
+    font-size: 13px; color: var(--text-dim); cursor:pointer;
+    padding: 6px 4px; border-bottom: 2px solid transparent;
+    transition: all .15s ease;
+  }
+  .tab:hover{ color: var(--text); }
+  .tab.active{ color: var(--text); border-bottom-color: var(--violet); font-weight:600; }
+  .tab.off{ opacity:.4; }
+
+  /* Chat area */
+  .chat-scroll{ flex:1; overflow-y:auto; }
+  .chat-inner{ max-width: 760px; margin: 0 auto; padding: 30px 26px 20px; }
+
+  .empty-state{
+    height:100%; min-height: 50vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap: 18px; padding-bottom: 4vh;
+  }
+  .empty-state h1{
+    font-family: var(--font-display);
+    font-size: 40px; font-weight:700; letter-spacing:-.02em; line-height:1.1;
+    background: var(--grad);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .empty-state p{ color: var(--text-dim); font-size: 14.5px; max-width:440px; }
+
+  .suggestions{ display:flex; flex-direction:column; gap:8px; width:100%; max-width:460px; margin-top:6px; }
+  .suggestion-row{
+    text-align:left;
+    border:1px solid var(--border);
+    background: var(--panel);
+    color: var(--text-dim);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    cursor:pointer;
+    transition: all .15s ease;
+  }
+  .suggestion-row:hover{ color: var(--text); border-color: var(--violet); background: var(--panel-2); }
+
+  .msg-row{ margin-bottom: 26px; }
+  .msg-row.user{ display:flex; justify-content:flex-end; }
+  .msg-row.user .bubble{
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px 14px 4px 14px;
+    padding: 11px 16px;
+    max-width: 78%;
+    font-size: 15px; line-height:1.55;
+    white-space: pre-wrap; word-wrap: break-word;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .msg-row.assistant .assistant-block{
+    max-width: 100%;
+    border-left: 2px solid var(--border);
+    padding-left: 16px;
+  }
+  .msg-row.assistant .role-label{
+    font-family: var(--font-mono);
+    font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    color: var(--violet); margin-bottom:7px; font-weight:600;
+  }
+  .msg-row.assistant .bubble{
+    font-size: 15.5px; line-height:1.7; white-space: pre-wrap; word-wrap: break-word;
+  }
+  .bubble a{ color: var(--cyan); }
+  .bubble strong{ font-weight:700; }
+  .bubble code{
+    font-family: var(--font-mono);
+    background: var(--panel);
+    padding: 2px 6px; border-radius: 5px; font-size: 13px;
+  }
+
+  .code-card{
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow:hidden;
+    margin: 12px 0;
+    background: var(--bg-alt);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .code-card-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-dim);
+  }
+  .code-card-actions{ display:flex; gap:16px; }
+  .code-link{
+    font-family: var(--font-body);
+    font-size: 12px; color: var(--text-dim);
+    background:none; border:none; cursor:pointer;
+    text-decoration: underline; text-underline-offset:3px; text-decoration-color: var(--border);
+    transition: color .15s ease;
+  }
+  .code-link:hover{ color: var(--text); text-decoration-color: var(--violet); }
+  .code-card pre{
+    margin:0; padding: 14px 16px; overflow-x:auto;
+    font-family: var(--font-mono); font-size: 13px; line-height:1.6;
+  }
+  .code-card iframe{
+    width:100%; height: 380px; border:none; border-top:1px solid var(--border); background:#fff;
+  }
+
+  .gen-image{ max-width: 100%; border-radius: 10px; margin-top:4px; display:block; border: 1px solid var(--border); }
+
+  .url-tag{
+    display:inline-block; font-family: var(--font-mono); font-size: 11px;
+    color: var(--cyan); border: 1px solid var(--border); padding: 3px 10px;
+    border-radius: 6px; margin-top: 8px; margin-right:6px;
+  }
+
+  .typing{ display:flex; gap:4px; padding: 2px 0; }
+  .typing span{ width:5px; height:5px; border-radius:50%; background: var(--violet); animation: bounce 1.2s infinite ease-in-out; }
+  .typing span:nth-child(2){ animation-delay:.15s; }
+  .typing span:nth-child(3){ animation-delay:.3s; }
+  @keyframes bounce{ 0%,60%,100%{ transform: translateY(0); opacity:.35; } 30%{ transform: translateY(-4px); opacity:1; } }
+
+  /* Input */
+  .input-area{ padding: 12px 26px 22px; flex-shrink:0; }
+  .input-inner{
+    max-width: 760px; margin: 0 auto;
+    display:flex; align-items:flex-end; gap: 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 13px 13px 13px 20px;
+    transition: border-color .15s ease;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+  .input-inner:focus-within{ border-color: var(--violet); }
+  #msgInput{
+    flex:1; background:none; border:none; outline:none; resize:none;
+    color: var(--text); font-family: var(--font-body); font-size: 15px;
+    line-height:1.5; max-height: 200px; padding: 5px 0;
+  }
+  #msgInput::placeholder{ color: var(--text-dim); }
+  .send-btn{
+    width:38px; height:38px; border-radius: 10px; border:none;
+    background: var(--grad); color:#08070b;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; flex-shrink:0;
+    transition: opacity .15s ease, transform .1s ease;
+    font-family: var(--font-display); font-weight:700; font-size:14px;
+  }
+  .send-btn:disabled{ opacity:.28; cursor:not-allowed; }
+  .send-btn:not(:disabled):active{ transform: scale(.92); }
+
+  .hint{ text-align:center; font-size:11px; color: var(--text-dim); margin-top:10px; max-width:760px; margin-left:auto; margin-right:auto; }
+
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-thumb{ background: #2a2438; border-radius: 8px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+
+  @media (max-width: 640px){
+    .switch-row{ gap:16px; }
+    .empty-state h1{ font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="wordmark" id="wordmark">
+      <img class="avatar" id="wordmarkAvatar" src="/avatar.jpg" alt="" style="display:none;">
+      <span class="avatar-fallback" id="wordmarkFallback">V</span>
+      <span id="wordmarkText">VDON</span>
+    </div>
+    <div class="top-right">
+      <div class="status-pill"><span class="live-label">Đang dùng</span><span class="dot" id="statusDot"></span><span id="modelName">đang kết nối…</span></div>
+      <button class="new-chat-link" id="newChatBtn">cuộc trò chuyện mới</button>
+    </div>
+  </div>
+
+  <div class="switch-row">
+    <div class="switch-group">
+      <span class="switch-group-label">Chế độ</span>
+      <div class="tab active" data-mode="chat">Trò chuyện</div>
+      <div class="tab" data-mode="image">Tạo ảnh</div>
+    </div>
+    <div class="switch-group" id="providerTabs">
+      <span class="switch-group-label">Model</span>
+    </div>
+  </div>
+
+  <div class="chat-scroll" id="chatScroll">
+    <div class="chat-inner" id="chatInner">
+      <div class="empty-state" id="emptyState">
+        <h1 id="heroHeading">Có gì cho<br>VDON giúp bạn?</h1>
+        <p>Đặt câu hỏi, dán link để đọc &amp; tóm tắt, hoặc chuyển sang chế độ Tạo ảnh. Code sẽ có sẵn nút xem trước và sao chép.</p>
+        <div class="suggestions">
+          <div class="suggestion-row">Tóm tắt bài viết này: https://…</div>
+          <div class="suggestion-row">Viết cho tôi 1 app iOS đơn giản bằng SwiftUI</div>
+          <div class="suggestion-row">Viết 1 trang HTML landing page đẹp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-inner">
+      <textarea id="msgInput" rows="1" placeholder="Nhắn tin…"></textarea>
+      <button class="send-btn" id="sendBtn" disabled>→</button>
+    </div>
+    <div class="hint" id="hintText">Bot có thể mắc lỗi. Hãy kiểm tra lại các thông tin quan trọng.</div>
+  </div>
+
+<script>
+  const chatInner = document.getElementById('chatInner');
+  const chatScroll = document.getElementById('chatScroll');
+  const emptyState = document.getElementById('emptyState');
+  const input = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const modelName = document.getElementById('modelName');
+  const statusDot = document.getElementById('statusDot');
+  const newChatBtn = document.getElementById('newChatBtn');
+  const providerTabs = document.getElementById('providerTabs');
+  const modeTabs = document.querySelectorAll('.tab[data-mode]');
+
+  let history = [];
+  let providersInfo = {};
+  let imageProvidersInfo = {};
+  let currentProvider = 'gemini';
+  let currentImageProvider = 'gemini';
+  let mode = 'chat';
+  let botName = 'VDON';
+
+  // Avatar: thử tải /avatar.jpg — nếu có, dùng ảnh; nếu không, dùng chữ cái đầu tên bot.
+  function setupAvatar(){
+    const img = document.getElementById('wordmarkAvatar');
+    const fallback = document.getElementById('wordmarkFallback');
+    fallback.textContent = botName.trim().charAt(0).toUpperCase() || 'V';
+    img.onload = () => { img.style.display = 'block'; fallback.style.display = 'none'; };
+    img.onerror = () => { img.style.display = 'none'; fallback.style.display = 'flex'; };
+    img.src = '/avatar.jpg?v=' + Date.now();
+  }
+
+  function msgAvatarHTML(){
+    // trả về mảnh HTML nhỏ dùng bên cạnh nhãn vai trò trong mỗi tin nhắn của bot
+    return `<img class="msg-avatar" src="/avatar.jpg" alt=""
+      onerror="this.outerHTML='<span class=&quot;msg-avatar-fallback&quot;></span>'">`;
+  }
+
+  function applyBotName(){
+    document.title = botName;
+    document.getElementById('wordmarkText').textContent = botName.toUpperCase();
+    document.getElementById('heroHeading').innerHTML = `Có gì cho<br>${escapeHtml(botName)} giúp bạn?`;
+    input.placeholder = mode === 'image' ? `Mô tả bức ảnh bạn muốn ${botName} vẽ…` : `Nhắn tin cho ${botName}…`;
+    document.getElementById('hintText').textContent = `${botName} có thể mắc lỗi. Hãy kiểm tra lại các thông tin quan trọng.`;
+    setupAvatar();
+  }
+
+  async function loadHealth(){
+    try {
+      const res = await fetch('/api/health');
+      const data = await res.json();
+      providersInfo = data.providers || {};
+      imageProvidersInfo = data.image_providers || {};
+      botName = data.bot_name || 'VDON';
+      applyBotName();
+      renderProviderTabs();
+      updateTopbar();
+    } catch (e) {
+      modelName.textContent = 'không kết nối được server';
+      statusDot.style.background = '#f87171';
+    }
+  }
+
+  function renderProviderTabs(){
+    providerTabs.innerHTML = '<span class="switch-group-label">Model</span>';
+    const source = mode === 'chat' ? providersInfo : imageProvidersInfo;
+    Object.entries(source).forEach(([key, info]) => {
+      const tab = document.createElement('div');
+      const active = (mode === 'chat' ? currentProvider : currentImageProvider) === key;
+      tab.className = 'tab' + (active ? ' active' : '') + (info.configured ? '' : ' off');
+      tab.textContent = info.label;
+      tab.addEventListener('click', () => {
+        if (mode === 'chat') currentProvider = key; else currentImageProvider = key;
+        renderProviderTabs();
+        updateTopbar();
+      });
+      providerTabs.appendChild(tab);
+    });
+  }
+
+  function updateTopbar(){
+    if (mode === 'chat') {
+      const info = providersInfo[currentProvider];
+      if (!info) return;
+      modelName.textContent = info.configured ? `${info.label} · ${info.model}` : `${info.label} — chưa có API key`;
+      statusDot.style.background = info.configured ? '#4ade80' : '#fb923c';
+    } else {
+      const info = imageProvidersInfo[currentImageProvider];
+      if (!info) return;
+      modelName.textContent = info.configured ? `Tạo ảnh · ${info.label}` : `${info.label} — chưa có API key`;
+      statusDot.style.background = info.configured ? '#4ade80' : '#fb923c';
+    }
+  }
+
+  modeTabs.forEach(tab => tab.addEventListener('click', () => {
+    mode = tab.dataset.mode;
+    modeTabs.forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+    input.placeholder = mode === 'image' ? `Mô tả bức ảnh bạn muốn ${botName} vẽ…` : `Nhắn tin cho ${botName}…`;
+    renderProviderTabs();
+    updateTopbar();
+  }));
+
+  loadHealth();
+
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 200) + 'px';
+    sendBtn.disabled = input.value.trim().length === 0;
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!sendBtn.disabled) sendMessage();
+    }
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  newChatBtn.addEventListener('click', () => {
+    history = [];
+    chatInner.innerHTML = '';
+    chatInner.appendChild(emptyState);
+    emptyState.style.display = 'flex';
+  });
+
+  document.querySelectorAll('.suggestion-row').forEach(row => {
+    row.addEventListener('click', () => {
+      input.value = row.textContent;
+      input.dispatchEvent(new Event('input'));
+      input.focus();
+    });
+  });
+
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function inlineFormat(text){
+    let escaped = escapeHtml(text);
+    escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+    escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    escaped = escaped.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    return escaped;
+  }
+
+  function buildMessageBody(text){
+    const container = document.createElement('div');
+    const regex = /```(\w+)?\n([\s\S]*?)```/g;
+    let lastIndex = 0, match;
+
+    while ((match = regex.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        const p = document.createElement('div');
+        p.className = 'bubble';
+        p.innerHTML = inlineFormat(text.slice(lastIndex, match.index));
+        container.appendChild(p);
+      }
+
+      const lang = (match[1] || '').toLowerCase();
+      const code = match[2];
+
+      const card = document.createElement('div');
+      card.className = 'code-card';
+
+      const head = document.createElement('div');
+      head.className = 'code-card-head';
+      const isHtml = lang === 'html' || lang === 'htm';
+      const isSwift = lang === 'swift' || lang === 'swiftui';
+      head.innerHTML = `<span>${lang || 'code'}</span>`;
+
+      const actions = document.createElement('div');
+      actions.className = 'code-card-actions';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'code-link';
+      copyBtn.textContent = isSwift ? 'sao chép cho Xcode' : 'sao chép';
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(code).then(() => {
+          copyBtn.textContent = 'đã sao chép';
+          setTimeout(() => { copyBtn.textContent = isSwift ? 'sao chép cho Xcode' : 'sao chép'; }, 1500);
+        });
+      });
+      actions.appendChild(copyBtn);
+
+      let previewBtn = null, iframe = null;
+      if (isHtml) {
+        previewBtn = document.createElement('button');
+        previewBtn.className = 'code-link';
+        previewBtn.textContent = 'xem trước';
+        actions.appendChild(previewBtn);
+      }
+      head.appendChild(actions);
+      card.appendChild(head);
+
+      const pre = document.createElement('pre');
+      const codeEl = document.createElement('code');
+      codeEl.textContent = code;
+      pre.appendChild(codeEl);
+      card.appendChild(pre);
+
+      if (isHtml && previewBtn) {
+        previewBtn.addEventListener('click', () => {
+          if (iframe) {
+            iframe.remove();
+            iframe = null;
+            previewBtn.textContent = 'xem trước';
+          } else {
+            iframe = document.createElement('iframe');
+            iframe.sandbox = 'allow-scripts allow-modals allow-forms';
+            iframe.srcdoc = code;
+            card.appendChild(iframe);
+            previewBtn.textContent = 'ẩn xem trước';
+          }
+        });
+      }
+
+      container.appendChild(card);
+      lastIndex = regex.lastIndex;
+    }
+
+    if (lastIndex < text.length) {
+      const p = document.createElement('div');
+      p.className = 'bubble';
+      p.innerHTML = inlineFormat(text.slice(lastIndex));
+      container.appendChild(p);
+    }
+
+    return container;
+  }
+
+  function addUserMessage(text){
+    if (emptyState.style.display !== 'none') emptyState.style.display = 'none';
+    const row = document.createElement('div');
+    row.className = 'msg-row user';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+    row.appendChild(bubble);
+    chatInner.appendChild(row);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+  }
+
+  function addAssistantMessage(text, meta){
+    if (emptyState.style.display !== 'none') emptyState.style.display = 'none';
+    const row = document.createElement('div');
+    row.className = 'msg-row assistant';
+    const block = document.createElement('div');
+    block.className = 'assistant-block';
+    const label = document.createElement('div');
+    label.className = 'role-label';
+    label.innerHTML = msgAvatarHTML() + escapeHtml(botName);
+    block.appendChild(label);
+    block.appendChild(buildMessageBody(text));
+
+    if (meta && meta.used_urls && meta.used_urls.length){
+      meta.used_urls.forEach(u => {
+        const tag = document.createElement('span');
+        tag.className = 'url-tag';
+        tag.textContent = 'đã đọc: ' + u;
+        block.appendChild(tag);
+      });
+    }
+    row.appendChild(block);
+    chatInner.appendChild(row);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+  }
+
+  function addImageMessage(base64, mime){
+    if (emptyState.style.display !== 'none') emptyState.style.display = 'none';
+    const row = document.createElement('div');
+    row.className = 'msg-row assistant';
+    const block = document.createElement('div');
+    block.className = 'assistant-block';
+    const label = document.createElement('div');
+    label.className = 'role-label';
+    label.innerHTML = msgAvatarHTML() + escapeHtml(botName);
+    const img = document.createElement('img');
+    img.className = 'gen-image';
+    img.src = `data:${mime};base64,${base64}`;
+    block.appendChild(label);
+    block.appendChild(img);
+    row.appendChild(block);
+    chatInner.appendChild(row);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+  }
+
+  function addTyping(){
+    const row = document.createElement('div');
+    row.className = 'msg-row assistant';
+    row.innerHTML = `<div class="assistant-block"><div class="role-label">${msgAvatarHTML()}${escapeHtml(botName)}</div><div class="typing"><span></span><span></span><span></span></div></div>`;
+    chatInner.appendChild(row);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+    return row;
+  }
+
+  async function sendMessage(){
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+    sendBtn.disabled = true;
+
+    addUserMessage(text);
+    const typingRow = addTyping();
+
+    if (mode === 'image') {
+      try {
+        const resp = await fetch('/api/image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: text, provider: currentImageProvider })
+        });
+        const data = await resp.json();
+        typingRow.remove();
+        if (!resp.ok) {
+          addAssistantMessage(data.error || 'Đã có lỗi xảy ra.');
+          return;
+        }
+        addImageMessage(data.image_base64, data.mime_type);
+      } catch (err) {
+        typingRow.remove();
+        addAssistantMessage('Không thể kết nối tới server: ' + err.message);
+      }
+      return;
+    }
+
+    history.push({ role: 'user', content: text });
+    try {
+      const resp = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history: history.slice(0, -1), provider: currentProvider })
+      });
+      const data = await resp.json();
+      typingRow.remove();
+
+      if (!resp.ok) {
+        addAssistantMessage(data.error || 'Đã có lỗi xảy ra.');
+        return;
+      }
+
+      addAssistantMessage(data.reply, { used_urls: data.used_urls });
+      history.push({ role: 'assistant', content: data.reply });
+
+    } catch (err) {
+      typingRow.remove();
+      addAssistantMessage('Không thể kết nối tới server: ' + err.message);
+    }
+  }
+</script>
+</body>
+</html>
